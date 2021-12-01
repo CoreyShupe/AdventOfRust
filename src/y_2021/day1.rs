@@ -81,5 +81,17 @@ pub fn optimized_sol2() {
     println!("Increases {} times.", cntr);
 }
 
-fn g(i:&str)->i32{let m=i32::MAX;i.lines().flat_map(str::parse).fold((m,m,m,0),|(a,b,c,d),i|(b,c,i,d+(a<i)as i32)).3}
-pub fn golf()->i32{g(INPUT)}
+trait Tally<X> {
+    fn tally<F: FnMut(&X) -> bool>(self, func: F) -> usize;
+}
+
+impl<X, T: Iterator<Item = X>> Tally<X> for T {
+    fn tally<F: FnMut(&X) -> bool>(self, func: F) -> usize {
+        self.filter(func).count()
+    }
+}
+
+pub fn golf()->usize{
+    let g=|i:Vec<u32>|{ /* golf start */  i.windows(4).tally(|x|x[0]<x[3]) /* golf end */ };
+    g(INPUT.lines().flat_map(str::parse).collect())
+}
