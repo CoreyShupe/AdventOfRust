@@ -3,14 +3,15 @@
 macro_rules! solve {
     ($year:ident, $day:ident $(+ { $($extra:tt)+ })?) => {
         mod $year;
+        use $year::$day::*;
 
         fn main() {
             println!("===  ===  ===  ===  ===  ===  ===");
             println!("Solve for solution 1:");
-            $year::$day::sol1();
+            sol1();
             println!("===  ===  ===  ===  ===  ===  ===");
             println!("Solve for solution 2:");
-            $year::$day::sol2();
+            sol2();
             println!("===  ===  ===  ===  ===  ===  ===");
             $(
                 $(
@@ -25,15 +26,16 @@ macro_rules! solve {
 macro_rules! solve_prone {
     ($year:ident, $day:ident $(+ { $($extra:tt)+ })?) => {
         mod $year;
+        use $year::$day::*;
 
         fn main() -> anyhow::Result<()> {
             println!("Solve for solution 1:");
             println!("===  ===  ===  ===  ===  ===  ===");
-            $year::$day::sol1()?;
+            sol1()?;
             println!("===  ===  ===  ===  ===  ===  ===");
             println!("Solve for solution 2:");
             println!("===  ===  ===  ===  ===  ===  ===");
-            $year::$day::sol2()?;
+            sol2()?;
             println!("===  ===  ===  ===  ===  ===  ===");
             $(
                 $(
@@ -50,8 +52,8 @@ solve!(
     y_2021,
     day1 + {
         println!("Iter only solution result:");
-        y_2021::day1::iter_only_sol2();
+        iter_only_sol2();
         println!("Optimized:");
-        y_2021::day1::optimized_sol2();
+        optimized_sol2();
     }
 );

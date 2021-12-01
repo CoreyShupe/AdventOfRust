@@ -71,10 +71,9 @@ pub fn optimized_sol2() {
     let mut cntr: i32 = 0;
 
     for x in numbers {
-        if bck[0] + bck[1] + bck[2] < bck[1] + bck[2] + x {
+        if bck[0] < x {
             cntr += 1;
         }
-        
         bck[0] = bck[1];
         bck[1] = bck[2];
         bck[2] = x;
