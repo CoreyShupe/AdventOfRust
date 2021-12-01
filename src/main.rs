@@ -55,5 +55,7 @@ solve!(
         iter_only_sol2();
         println!("Optimized:");
         optimized_sol2();
+        println!("Golfed:");
+        println!("Increased {} times.", golf());
     }
 );

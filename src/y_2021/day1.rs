@@ -80,3 +80,6 @@ pub fn optimized_sol2() {
     }
     println!("Increases {} times.", cntr);
 }
+
+fn g(i:&str)->i32{let m=i32::MAX;i.lines().flat_map(str::parse).fold((m,m,m,0),|(a,b,c,d),i|(b,c,i,d+(a<i)as i32)).3}
+pub fn golf()->i32{g(INPUT)}
