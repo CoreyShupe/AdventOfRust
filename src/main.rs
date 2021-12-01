@@ -12,7 +12,6 @@ macro_rules! solve {
             println!("Solve for solution 2:");
             $year::$day::sol2();
             println!("===  ===  ===  ===  ===  ===  ===");
-
             $(
                 $(
                     $extra
@@ -47,9 +46,12 @@ macro_rules! solve_prone {
     };
 }
 
-solve!(y_2021, day1 + { 
-    println!("Iter only solution result:");
-    y_2021::day1::iter_only_sol2();
-    println!("Optimized:");
-    y_2021::day1::optimized_sol2();
-});
+solve!(
+    y_2021,
+    day1 + {
+        println!("Iter only solution result:");
+        y_2021::day1::iter_only_sol2();
+        println!("Optimized:");
+        y_2021::day1::optimized_sol2();
+    }
+);
