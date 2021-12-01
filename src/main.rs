@@ -48,12 +48,6 @@ macro_rules! solve_prone {
     };
 }
 
-// fn main() {
-//     println!("{}", r#"
-//     let g=|i:&str|{i.lines().flat_map(str::parse).collect::<Vec<u32>>().windows(4).filter(|x|x[0]<x[3]).count()};
-//     "#.len())
-// }
-
 solve!(
     y_2021,
     day1 + {
