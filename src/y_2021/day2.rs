@@ -32,6 +32,20 @@ pub fn sol1() {
     println!("{:?} = {}", position, position.0 * position.1);
 }
 
+pub fn simple_sol1() {
+    let output = INPUT.lines().map(|x| x.split(' ')).fold((0, 0), |acc, mut item| {
+        let x = item.next().unwrap().chars().next().unwrap();
+        let y = item.next().unwrap().parse::<i32>().unwrap();
+        match x {
+            'd' => (acc.0, acc.1 + y),
+            'f' => (acc.0 + y, acc.1),
+            'u' => (acc.0, acc.1 - y),
+            _ => unreachable!(),
+        }
+    });
+    println!("{}", output.0 * output.1);
+}
+
 pub fn sol2() {
     let mut position = (0, 0, 0);
 
@@ -44,4 +58,18 @@ pub fn sol2() {
     }
 
     println!("{:?} = {}", position, position.1 * position.2);
+}
+
+pub fn simple_sol2() {
+    let output = INPUT.lines().map(|x| x.split(' ')).fold((0, 0, 0), |acc, mut item| {
+        let x = item.next().unwrap().chars().next().unwrap();
+        let y = item.next().unwrap().parse::<i32>().unwrap();
+        match x {
+            'd' => (acc.0 + y, acc.1, acc.2),
+            'f' => (acc.0, acc.1 + y, acc.2 + (acc.0 * y)),
+            'u' => (acc.0 - y, acc.1, acc.2),
+            _ => unreachable!(),
+        }
+    });
+    println!("{}", output.1 * output.2);
 }
