@@ -50,12 +50,5 @@ macro_rules! solve_prone {
 
 solve!(
     y_2021,
-    day1 + {
-        println!("Iter only solution result:");
-        iter_only_sol2();
-        println!("Optimized:");
-        optimized_sol2();
-        println!("Golfed:");
-        println!("Increased {} times.", golf());
-    }
+    day2
 );
