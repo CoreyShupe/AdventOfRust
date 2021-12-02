@@ -23,9 +23,9 @@ pub fn sol1() {
     
     for ele in parse_input() {
         match ele.0 {
-            Direction::Down => position = (position.0, position.1 + ele.1),
-            Direction::Forward => position = (position.0 + ele.1, position.1),
-            Direction::Up => position = (position.0, position.1 - ele.1),
+            Direction::Down => position.1 += ele.1,
+            Direction::Forward => position.0 += ele.1,
+            Direction::Up => position.1 -= ele.1,
         }
     }
 
@@ -51,9 +51,12 @@ pub fn sol2() {
 
     for ele in parse_input() {
         match ele.0 {
-            Direction::Down => position = (position.0 + ele.1, position.1, position.2),
-            Direction::Up => position = (position.0 - ele.1, position.1, position.2),
-            Direction::Forward => position = (position.0, position.1 + ele.1, position.2 + (ele.1 * position.0)),
+            Direction::Down => position.0 += ele.1,
+            Direction::Up => position.0 -= ele.1,
+            Direction::Forward => {
+                position.1 += ele.1; 
+                position.2 += ele.1 * position.0;
+            },
         }
     }
 
