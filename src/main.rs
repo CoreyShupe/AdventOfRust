@@ -48,10 +48,4 @@ macro_rules! solve_prone {
     };
 }
 
-solve!(
-    y_2021,
-    day3 + {
-        println!("Simple Part 1:");
-        simple_sol1();
-    }
-);
+solve!(y_2021, day4);

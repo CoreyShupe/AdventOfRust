@@ -7,6 +7,7 @@ name = "advent_of_code"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "serde_scan",
 ]
 
 [[package]]
@@ -14,3 +15,18 @@ name = "anyhow"
 version = "1.0.51"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8b26702f315f53b6071259e15dd9d64528213b44d61de1ec926eca7715d62203"
+
+[[package]]
+name = "serde"
+version = "1.0.130"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f12d06de37cf59146fbdecab66aa99f9fe4f78722e3607577a5375d66bd0c913"
+
+[[package]]
+name = "serde_scan"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c328aed355674cef5038b201b14b24eb877213462edb7ba28801c6bdd0ac5597"
+dependencies = [
+ "serde",
+]
