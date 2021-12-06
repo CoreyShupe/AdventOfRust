@@ -48,7 +48,4 @@ macro_rules! solve_prone {
     };
 }
 
-solve!(y_2021, day5 + {
-    println!("Padded Iterator Solution:");
-    padded_solutions_1_pass();
-});
+solve!(y_2021, day6);
