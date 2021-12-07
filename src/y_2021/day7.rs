@@ -9,7 +9,11 @@ fn solve<F: Fn(&[i64], i64) -> i64>(determine_fuel_usage: F) {
 }
 
 pub fn sol1() {
-    solve(|vec, position| vec.iter().map(|x| (x - position).abs()).sum());
+    solve(|vec, position| {
+        vec.iter()
+            .map(|crab_position| (crab_position - position).abs())
+            .sum()
+    });
 }
 
 pub fn sol2() {
@@ -19,7 +23,7 @@ pub fn sol2() {
 
     solve(|vec, position| {
         vec.iter()
-            .map(|x| addative_factorial((x - position).abs()))
+            .map(|crab_position| addative_factorial((crab_position - position).abs()))
             .sum()
     });
 }
