@@ -28,10 +28,36 @@ fn permutations() -> itertools::Permutations<std::ops::RangeInclusive<char>> {
 }
 
 pub fn sol2() {
+    const MAGIC: u8 = 48;
+    const MAPPING: [&[usize]; 10] = [
+        &[0, 1, 2, 4, 5, 6],
+        &[2, 5],
+        &[0, 2, 3, 4, 6],
+        &[0, 2, 3, 5, 6],
+        &[1, 2, 3, 5],
+        &[0, 1, 3, 5, 6],
+        &[0, 1, 3, 4, 5, 6],
+        &[0, 2, 5],
+        &[0, 1, 2, 3, 4, 5, 6],
+        &[0, 1, 2, 3, 5, 6],
+    ];
+
+    fn require_permute(uses: &[usize], permutation: &[char], item: &str) -> bool {
+        uses.iter().all(|x| item.contains(permutation[*x]))
+    }
+
+    fn find_mapping(mapping_range: &[usize], permutation: &[char], item: &str) -> Option<u8> {
+        mapping_range
+            .iter()
+            .find(|local| require_permute(MAPPING[**local], permutation, item))
+            .copied()
+            .map(|x| x as u8)
+    }
+
     let result = parse_input()
         .iter()
         .map(|(input, output)| {
-            for permutation in permutations() {
+            'permute: for permutation in permutations() {
                 // test the input against the permutation and make sure it works
                 let mut new_input = vec![];
                 for item in input {
@@ -41,204 +67,37 @@ pub fn sol2() {
                     }
                 }
                 let mut numbers_used = vec![];
-                let mut fail = false;
                 for item in new_input {
                     match item.len() {
-                        2 => {
-                            // 1 = [2, 5]
-                            if !item.contains(permutation[2]) || !item.contains(permutation[5]) {
-                                fail = true;
-                                break;
-                            }
-                        }
-                        3 => {
-                            // 7 = [0, 2, 5]
-                            if !item.contains(permutation[0])
-                                || !item.contains(permutation[2])
-                                || !item.contains(permutation[5])
-                            {
-                                fail = true;
-                                break;
-                            }
-                        }
-                        4 => {
-                            // 4 = [1, 2, 3, 5]
-                            if !item.contains(permutation[1])
-                                || !item.contains(permutation[2])
-                                || !item.contains(permutation[3])
-                                || !item.contains(permutation[5])
-                            {
-                                fail = true;
-                                break;
-                            }
-                        }
-                        5 => {
-                            // 2 = [0, 2, 3, 4, 6]
-                            // 3 = [0, 2, 3, 5, 6]
-                            // 5 = [0, 1, 3, 5, 6]
-                            if item.contains(permutation[0])
-                                && item.contains(permutation[2])
-                                && item.contains(permutation[3])
-                                && item.contains(permutation[4])
-                                && item.contains(permutation[6])
-                            {
-                                if numbers_used.contains(&2) {
-                                    fail = true;
-                                    break;
-                                }
-                                numbers_used.push(2);
-                            } else if item.contains(permutation[0])
-                                && item.contains(permutation[2])
-                                && item.contains(permutation[3])
-                                && item.contains(permutation[5])
-                                && item.contains(permutation[6])
-                            {
-                                if numbers_used.contains(&3) {
-                                    fail = true;
-                                    break;
-                                }
-                                numbers_used.push(3);
-                            } else if item.contains(permutation[0])
-                                && item.contains(permutation[1])
-                                && item.contains(permutation[3])
-                                && item.contains(permutation[5])
-                                && item.contains(permutation[6])
-                            {
-                                if numbers_used.contains(&5) {
-                                    fail = true;
-                                    break;
-                                }
-                                numbers_used.push(5);
-                            } else {
-                                fail = true;
-                                break;
-                            }
-                        }
-                        6 => {
-                            // 0 = [0, 1, 2, 4, 5, 6]
-                            // 6 = [0, 1, 3, 4, 5, 6]
-                            // 9 = [0, 1, 2, 3, 5, 6]
-                            if item.contains(permutation[0])
-                                && item.contains(permutation[1])
-                                && item.contains(permutation[2])
-                                && item.contains(permutation[4])
-                                && item.contains(permutation[5])
-                                && item.contains(permutation[6])
-                            {
-                                if numbers_used.contains(&0) {
-                                    fail = true;
-                                    break;
-                                }
-                                numbers_used.push(0);
-                            } else if item.contains(permutation[0])
-                                && item.contains(permutation[1])
-                                && item.contains(permutation[3])
-                                && item.contains(permutation[4])
-                                && item.contains(permutation[5])
-                                && item.contains(permutation[6])
-                            {
-                                if numbers_used.contains(&6) {
-                                    fail = true;
-                                    break;
-                                }
-                                numbers_used.push(6);
-                            } else if item.contains(permutation[0])
-                                && item.contains(permutation[1])
-                                && item.contains(permutation[2])
-                                && item.contains(permutation[3])
-                                && item.contains(permutation[5])
-                                && item.contains(permutation[6])
-                            {
-                                if numbers_used.contains(&9) {
-                                    fail = true;
-                                    break;
-                                }
-                                numbers_used.push(9);
-                            } else {
-                                fail = true;
-                                break;
-                            }
-                        }
-                        7 => (),
-                        _ => unreachable!(),
+                        2 if !require_permute(MAPPING[1], &permutation, &item) => continue 'permute,
+                        3 if !require_permute(MAPPING[7], &permutation, &item) => continue 'permute,
+                        4 if !require_permute(MAPPING[4], &permutation, &item) => continue 'permute,
+                        5 => match find_mapping(&[2, 3, 5], &permutation, &item) {
+                            Some(idx) if !numbers_used.contains(&idx) => numbers_used.push(idx),
+                            _ => continue 'permute,
+                        },
+                        6 => match find_mapping(&[0, 6, 9], &permutation, &item) {
+                            Some(idx) if !numbers_used.contains(&idx) => numbers_used.push(idx),
+                            _ => continue 'permute,
+                        },
+                        _ => (),
                     }
                 }
-                if !fail {
-                    return (permutation, output);
-                }
+                return (permutation, output);
             }
             unreachable!();
         })
         .map(|(permutation, input)| {
             fn find_digit(permutation: &[char], input: &str) -> char {
-                match input.len() {
-                    2 => '1',
-                    3 => '7',
-                    4 => '4',
-                    5 => {
-                        // 2 = [0, 2, 3, 4, 6]
-                        // 3 = [0, 2, 3, 5, 6]
-                        // 5 = [0, 1, 3, 5, 6]
-                        if input.contains(permutation[0])
-                            && input.contains(permutation[2])
-                            && input.contains(permutation[3])
-                            && input.contains(permutation[4])
-                            && input.contains(permutation[6])
-                        {
-                            '2'
-                        } else if input.contains(permutation[0])
-                            && input.contains(permutation[2])
-                            && input.contains(permutation[3])
-                            && input.contains(permutation[5])
-                            && input.contains(permutation[6])
-                        {
-                            '3'
-                        } else if input.contains(permutation[0])
-                            && input.contains(permutation[1])
-                            && input.contains(permutation[3])
-                            && input.contains(permutation[5])
-                            && input.contains(permutation[6])
-                        {
-                            '5'
-                        } else {
-                            unreachable!()
-                        }
-                    }
-                    6 => {
-                        // 0 = [0, 1, 2, 4, 5, 6]
-                        // 6 = [0, 1, 3, 4, 5, 6]
-                        // 9 = [0, 1, 2, 3, 5, 6]
-                        if input.contains(permutation[0])
-                            && input.contains(permutation[1])
-                            && input.contains(permutation[2])
-                            && input.contains(permutation[4])
-                            && input.contains(permutation[5])
-                            && input.contains(permutation[6])
-                        {
-                            '0'
-                        } else if input.contains(permutation[0])
-                            && input.contains(permutation[1])
-                            && input.contains(permutation[3])
-                            && input.contains(permutation[4])
-                            && input.contains(permutation[5])
-                            && input.contains(permutation[6])
-                        {
-                            '6'
-                        } else if input.contains(permutation[0])
-                            && input.contains(permutation[1])
-                            && input.contains(permutation[2])
-                            && input.contains(permutation[3])
-                            && input.contains(permutation[5])
-                            && input.contains(permutation[6])
-                        {
-                            '9'
-                        } else {
-                            unreachable!()
-                        }
-                    }
-                    7 => '8',
+                (match input.len() {
+                    2 => 1u8,
+                    3 => 7u8,
+                    4 => 4u8,
+                    5 => find_mapping(&[2, 3, 5], permutation, input).unwrap(),
+                    6 => find_mapping(&[0, 6, 9], permutation, input).unwrap(),
+                    7 => 8u8,
                     _ => unreachable!(),
-                }
+                } + MAGIC) as char
             }
             input
                 .iter()
