@@ -48,4 +48,4 @@ macro_rules! solve_prone {
     };
 }
 
-solve!(y_2021, day7);
+solve!(y_2021, day8);
